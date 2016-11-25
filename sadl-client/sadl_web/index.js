@@ -12,9 +12,6 @@ sadl.registerPlugins([
     require('sadl-client/lib/languageServer/plugin').languageServerExtension,
     require('sadl-client/lib/languageServer/editorService/plugin').editorServiceProvider,
 
-    require('sadl-client/lib/about/plugin').aboutExtension,
-    require('sadl-client/lib/landing/plugin').landingExtension,
-    
     require('jupyterlab/lib/clipboard/plugin').clipboardProvider,
     //require('jupyterlab/lib/commandlinker/plugin').commandLinkerProvider,
     require('jupyterlab/lib/commandpalette/plugin').commandPaletteProvider,
