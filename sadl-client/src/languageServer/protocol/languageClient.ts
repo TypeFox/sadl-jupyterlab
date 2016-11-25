@@ -2,7 +2,7 @@ import * as utils from '../../utils/notebook';
 
 import * as is from 'vscode-jsonrpc/lib/is'
 import { Disposable } from 'vscode-jsonrpc/lib/events'
-import { ClientMessageConnection } from 'vscode-jsonrpc'
+import { ClientMessageConnection, NotificationType } from 'vscode-jsonrpc'
 
 import * as lstypes from 'vscode-languageserver-types'
 import * as protocol from 'vscode-languageclient/lib/protocol'
@@ -14,6 +14,57 @@ import * as languageConverter from './languageConverter'
 import { LanguageDescription } from './registry'
 
 import Workspace from './workspace';
+
+
+// FIXME move to types module
+export class ColoringParams {
+    uri: string;
+    infos: ColoringInformation[];
+}
+
+export class ColoringInformation {
+    range: lstypes.Range;
+    styles: number[];
+}
+
+export class ColoringIdToCssStyleMap {
+    static map: Map<number, string> = new Map<number, string>([
+        [1, 'identifier'],
+        [2, 'entity'],
+        [3, 'constructor'],
+        [4, 'operators'],
+        [5, 'tag'],
+        [6, 'namespace'],
+        [7, 'keyword'],
+        [8, 'info-token'],
+        [9, 'type'],
+        [10, 'string'],
+        [11, 'warn-token'],
+        [12, 'predefined'],
+        [13, 'string.escape'],
+        [14, 'error-token'],
+        [15, 'invalid'],
+        [16, 'comment'],
+        [17, 'debug-token'],
+        [18, 'commen.doc'],
+        [19, 'regexp'],
+        [20, 'constant'],
+        [21, 'attribute'],
+
+        [22, 'public'],
+        [23, 'private'],
+        [24, 'protected'],
+        [25, 'static'],
+        [26, 'final']
+    ]);
+}
+
+// FIXME move to protocol module
+class ColoringNotification {
+    static type: NotificationType<ColoringParams> = {
+        method: 'textDocument/updateColoring'
+    };
+}
 
 export class LanguageClient implements
         monaco.languages.DefinitionProvider,
@@ -42,6 +93,15 @@ export class LanguageClient implements
             uriToDiagnosticMap.set(params.uri, diagnostics)
             this.updateMarkers(params.uri, diagnostics)
         })
+
+        let uriToColoringDecorationIdsMap = new Map<string, string[]>();
+        this._connection.onNotification(ColoringNotification.type, params => {
+            let infos = params.infos;
+            let uri = params.uri;
+            this.updateColoringDecorators(uri, infos, uriToColoringDecorationIdsMap);
+        });
+
+
         this._connection.onDispose(params => {
             this.dispose();
         })
@@ -49,6 +109,33 @@ export class LanguageClient implements
             let diagnostics = uriToDiagnosticMap.get(textDocument.uri)
             this.updateMarkers(textDocument.uri, diagnostics)
         }));
+    }
+
+    // FIXME move to coloring service
+    protected updateColoringDecorators(uri: string, infos: ColoringInformation[], uriToColoringDecorationIdsMap: Map<string, string[]>) {
+        let modelUri = monaco.Uri.parse(uri)
+        let model = monaco.editor.getModel(modelUri)
+        if (is.undefined(model) || is.nil(model)) {
+            return;
+        }
+
+        const decorationIdsToRemove = uriToColoringDecorationIdsMap.get(uri);
+        if (decorationIdsToRemove) {
+            while (decorationIdsToRemove.length !== 0) {
+                const oldId = decorationIdsToRemove.pop();
+                model.deltaDecorations([oldId], []);
+            }
+        }
+
+        const newDecorationIds: string[] = [];
+        infos.forEach(info => {
+            const monacoRange = protocolConverter.asRange(info.range);
+            info.styles.forEach(style => {
+                const cssClass = ColoringIdToCssStyleMap.map.get(style);
+                newDecorationIds.push(model.deltaDecorations([], [{ range: monacoRange, options: { inlineClassName: cssClass } }])[0]);
+            })
+        });
+        uriToColoringDecorationIdsMap.set(uri, newDecorationIds);
     }
 
     dispose() {

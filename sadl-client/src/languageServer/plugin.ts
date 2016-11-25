@@ -1,5 +1,5 @@
 import {
-    createClientMessageConnection
+    createClientMessageConnection, ClientMessageConnection
 } from 'vscode-jsonrpc';
 
 import {
@@ -44,7 +44,7 @@ import {
 } from '../monaco/editor';
 
 import {
-    sadlLanguage, InferenceEditorService
+    sadlLanguage, InferenceEditorService, InferenceResultProvider
 } from '../sadl';
 
 import {
@@ -111,7 +111,9 @@ export function registerLanguages(
             canStartKernel: false,
             editorWidgetProvider: (editorFactory, context) => {
                 const editorWidget = new LanguageServerAwareEditorWidget(editorFactory, context);
-                new InferenceEditorService().editor = (editorWidget.editor as MonacoEditor).editor;
+                const sadlService = new InferenceEditorService()
+                sadlService.editor = (editorWidget.editor as MonacoEditor).editor;
+                sadlService.provider = new InferenceResultProvider(connection);
                 editorWidget.languageId = language.id;
                 return editorWidget;
             }
@@ -141,6 +143,9 @@ export function doRegisterFileCreators(registry: IDocumentRegistry) {
         });
 }
 
+
+let connection: ClientMessageConnection = null;
+
 function openWebSocket() {
     // http://localhost:8080/sadlmonaco
     const wsUrl = new URLs(location).getWebSocketUrl(8080, '/sadlmonaco/languageServer')
@@ -155,7 +160,7 @@ function openWebSocket() {
         const messageReader = new WebSocketMessageReader(webSocket);
 
         const logger = new ConsoleLogger();
-        const connection = createClientMessageConnection(messageReader, messageWriter, logger);
+        connection = createClientMessageConnection(messageReader, messageWriter, logger);
         const languageClient = new LanguageClient(connection, [sadlLanguage]);
         languageClient.start().then(() => {
             // send open notification for all open editors

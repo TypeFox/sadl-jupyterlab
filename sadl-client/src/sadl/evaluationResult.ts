@@ -1,4 +1,3 @@
-import '../style.css';
 import { EvaluationResultData } from './evaluationResultData'
 
 export class EvaluationResult {

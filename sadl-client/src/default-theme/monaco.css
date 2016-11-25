@@ -24,3 +24,51 @@
     width: -moz-calc(100% - 200px);
     width: -webkit-calc(100% - 200px);
 }
+
+.keyword {
+    color: #801480 !important;
+    font-weight: bold;
+}
+
+.string {
+    color: #000000 !important;
+    background: #E6F0FF !important;
+}
+
+.number {
+    color: #000000 !important;
+    background: #E6F0FF !important;
+}
+
+.attribute {
+    color: #000000 !important;
+    background: white !important;
+}
+
+.type {
+    color: #000080 !important;
+}
+
+.tag {
+    color: #0000FF !important;
+}
+
+.constant {
+    color: #FF00FF !important;
+}
+
+.constructor {
+    color: #008000 !important;
+}
+
+.namespace {
+    color: #00CC00 !important;
+}
+
+.warn-token {
+    color: #000080 !important;
+}
+
+.predefined {
+    color: #801480 !important;
+}
