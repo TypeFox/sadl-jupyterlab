@@ -99,7 +99,7 @@ jupyter serverextension enable --py sadl_web
 ### Run SADL Jupyter Extension
 
 ```
-jupyter sadl --debug --notebook-dir=/path/to/project/directory
+sadl_web
 ```
 
 ### Uninstall RIDE Jupyter Extension
