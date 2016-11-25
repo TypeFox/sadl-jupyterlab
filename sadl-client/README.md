@@ -102,7 +102,7 @@ jupyter serverextension enable --py sadl_web
 sadl_web
 ```
 
-### Uninstall RIDE Jupyter Extension
+### Uninstall SADL Jupyter Extension
 
 ```bash
 jupyter serverextension disable --py sadl_web
@@ -113,10 +113,10 @@ pip uninstall sadl_web
 ## High level Architecture
 
 The application consist of the following packages:
-- sadl-client - RIDE plugins: about, language server editor, etc.;
-- sadl_web - RIDE Jupyter Extension which is combination of JupyterLab and RIDE plugins.
+- sadl-client - SADL plugins: about, language server editor, etc.;
+- sadl_web - SADL Jupyter Extension which is combination of JupyterLab and SADL plugins.
 
-During the build first RIDE plugins are compiled and then the RIDE Jupyter Extension.
+During the build first SADL plugins are compiled and then the SADL Jupyter Extension.
 
 
 
