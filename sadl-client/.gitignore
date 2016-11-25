@@ -1,0 +1,10 @@
+build
+node_modules
+lib
+
+.ipynb_checkpoints
+*.ipynb
+/dist/
+/jupyter*.egg-info/
+*.pyc
+/work/

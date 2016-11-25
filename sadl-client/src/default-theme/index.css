@@ -1,0 +1,93 @@
+@import url('~sadl-client/lib/about/index.css');
+@import url('~sadl-client/lib/utils/theme.css');
+@import './images.css';
+@import './monaco.css';
+@import './toolbar.css';
+
+body {
+  background: #E0E0E0;
+  font-family: sans-serif;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.p-Widget {
+  overflow: visible;
+  background: white;
+}
+
+.p-Widget.jp-CSVWidget {
+  overflow: auto;
+}
+
+.p-Widget.jp-ConsoleContent-content {
+  overflow: auto;
+}
+
+.jp-ConsoleContent-content .jp-Cell.jp-ConsoleContent-foreignCell {
+  background-color: white;
+  flex: initial;
+  overflow: visible;
+}
+
+.p-Widget.jp-Notebook {
+  overflow: auto;
+}
+
+.p-Widget.p-StackedPanel {
+  overflow: hidden;
+}
+
+.jp-Output-result {
+    padding-left: 0em;
+}
+
+.jp-OutputArea {
+    max-height: inherit;
+}
+
+.p-Widget.jp-MarkdownWidget{
+  overflow: auto;
+}
+
+.p-Widget.p-mod-hidden {
+  background: none;
+}
+
+.p-Widget.p-Menu {
+  position: absolute;
+}
+
+.jp-MainAreaPortraitIcon {
+  background-position: 0 1px;
+  background-repeat: no-repeat;
+  margin-right: 0;
+  width: 20px;
+}
+
+.jp-Toolbar {
+  min-height: 24px;
+  max-height: 24px;
+} 
+
+.toast {
+  background-color: #030303;
+}
+.toast-success {
+  background-color: #51a351;
+}
+.toast-error {
+  background-color: #bd362f;
+}
+.toast-info {
+  background-color: var(--jp-brand-color1);
+}
+.toast-warning {
+  background-color: #f89406;
+}

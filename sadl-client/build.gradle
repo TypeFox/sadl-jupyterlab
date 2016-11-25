@@ -1,0 +1,20 @@
+
+def condaDir =  System.getenv('CONDA_DIR')
+
+if(condaDir == null && project.ext.properties.containsKey("CONDA_DIR")) {
+    condaDir =  project.ext.get("CONDA_DIR")
+}
+
+task runJupyterRideBuild(type:Exec) {
+    workingDir "${projectDir}"
+    commandLine "bash", "build.sh", condaDir
+}
+
+task karmaTests(type:Exec) {
+    workingDir "${projectDir}"
+    commandLine "bash", "test/test.sh", condaDir
+    outputs.dir 'test/build/'
+    inputs.files 'src','test/src','typing','package.json','scripts'
+}
+
+//test.finalizedBy(karmaTests)

@@ -1,0 +1,28 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:j.0="http://jena.hpl.hp.com/schemas/2003/03/ont-manager#">
+  <j.0:OntologySpec>
+    <j.0:prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Other</j.0:prefix>
+    <j.0:createdBy>SADL</j.0:createdBy>
+    <j.0:language rdf:resource="http://www.w3.org/2002/07/owl"/>
+    <j.0:altURL rdf:resource="file:/Users/efftinge/Documents/Eclipse/sadl3-master2/git/sadl-client/sadl-client-parent/sadl-client/sadl_web/OwlModels/Other.owl"/>
+    <j.0:publicURI rdf:resource="http://sadl.org/Other.sadl"/>
+  </j.0:OntologySpec>
+  <j.0:OntologySpec>
+    <j.0:prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >sadlbasemodel</j.0:prefix>
+    <j.0:createdBy>SADL</j.0:createdBy>
+    <j.0:language rdf:resource="http://www.w3.org/2002/07/owl"/>
+    <j.0:altURL rdf:resource="file:/Users/efftinge/Documents/Eclipse/sadl3-master2/git/sadl-client/sadl-client-parent/sadl-client/sadl_web/OwlModels/SadlBaseModel.owl"/>
+    <j.0:publicURI rdf:resource="http://sadl.org/sadlbasemodel"/>
+  </j.0:OntologySpec>
+  <j.0:OntologySpec>
+    <j.0:prefix rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >untitled</j.0:prefix>
+    <j.0:createdBy>SADL</j.0:createdBy>
+    <j.0:language rdf:resource="http://www.w3.org/2002/07/owl"/>
+    <j.0:altURL rdf:resource="file:/Users/efftinge/Documents/Eclipse/sadl3-master2/git/sadl-client/sadl-client-parent/sadl-client/sadl_web/OwlModels/untitled.owl"/>
+    <j.0:publicURI rdf:resource="http://sadl.org/untitled.sadl"/>
+  </j.0:OntologySpec>
+</rdf:RDF>

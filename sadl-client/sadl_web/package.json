@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "name": "sadl_web",
+  "version": "0.0.1",
+  "description": "SADL Jupyter Extension",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "dependencies": {
+    "es6-promise": "3.3.x",
+    "font-awesome": "^4.7.0",
+    "sadl-client": "file:../",
+    "jupyterlab": "file:../../../../jupyterlab",
+    "phosphor": "0.7.x",
+    "material-design-icons": "^2.2.3"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^3.0.1",
+    "css-loader": "^0.23.1",
+    "file-loader": "^0.8.5",
+    "json-loader": "^0.5.4",
+    "rimraf": "^2.5.0",
+    "source-map-loader": "^0.1.5",
+    "style-loader": "^0.13.0",
+    "ts-loader": "^0.8.2",
+    "typescript": "^2.0.6",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.3"
+  },
+  "scripts": {
+    "clean": "rimraf build",
+    "update": "rimraf node_modules/sadl-client && npm install",
+    "build": "npm run update && npm run build:extension",
+    "build:extension": "webpack --config webpack.conf.js",
+    "postinstall": "npm dedupe",
+    "test": "echo 'no tests specified'"
+  }
+}

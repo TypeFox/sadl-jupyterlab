@@ -1,0 +1,3 @@
+[console_scripts]
+sadl_web = sadl_web.sadlapp:main
+

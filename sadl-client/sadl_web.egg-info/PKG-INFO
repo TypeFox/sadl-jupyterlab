@@ -1,0 +1,18 @@
+Metadata-Version: 1.1
+Name: sadl-web
+Version: 0.0.1
+Summary: A prototype for SADL in a web browser.
+Home-page: http://typefox.io
+Author: TypeFox
+Author-email: info@typefox.io
+License: UNKNOWN
+Description: This is a very early pre-alpha developer preview. It is not ready for general usage yet.
+Keywords: sadl,semanticweb,owl
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3

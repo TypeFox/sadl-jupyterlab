@@ -1,0 +1,5 @@
+recursive-include sadl_web/build *
+include sadl_web/__init__.py
+include sadl_web/sadlapp.py
+include sadl_web/sadl.html
+include package.json
