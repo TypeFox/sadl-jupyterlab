@@ -1,4 +1,3 @@
-import '../style.css';
 import * as dom from './dom';
 import { EvaluationResultData } from './evaluationResultData'
 import { EvaluationResultViewZone } from './EvaluationResultViewZone'
