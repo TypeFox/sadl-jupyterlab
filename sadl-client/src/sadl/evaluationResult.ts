@@ -1,6 +1,7 @@
 import * as dom from './dom';
 import { EvaluationResultData } from './evaluationResultData'
 import { EvaluationResultViewZone } from './EvaluationResultViewZone'
+import './sadl.css'
 
 export class EvaluationResult implements monaco.editor.IContentWidget {
 
@@ -141,7 +142,8 @@ export class EvaluationResult implements monaco.editor.IContentWidget {
         const html: string[] = [];
 
         const height = this.editor.getConfiguration().fontInfo.fontSize;
-        const svg = multiline ? `<img src="./media/${this.expanded ? 'collapse' : 'expand'}.svg" style="width:${height}px;height:${height}px;"/>` : undefined;
+        const imageClassName = this.expanded ? 'collapse-icon' : 'expand-icon'
+        const svg = multiline ? `<image class="${imageClassName}" style="width:${height}px;height:${height}px;"/>` : undefined;
         if (svg) {
             html.push(svg);
         }

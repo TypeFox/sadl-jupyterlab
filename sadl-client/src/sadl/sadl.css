@@ -1,0 +1,7 @@
+.collapse-icon {
+    content: url(./media/collapse.svg);
+}
+
+.expand-icon {
+    content: url(./media/expand.svg);
+}
