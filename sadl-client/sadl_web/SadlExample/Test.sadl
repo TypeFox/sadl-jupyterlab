@@ -8,6 +8,6 @@ MyCircle is a Circle with radius 4.5.
 
 Ask: "select ?sh ?ar where {?sh <area> ?ar}".
 
-Test: area of MyCircle is 63.4.
+Test: area of MyCircle is 63.61.
 
-Test: area of MyCircle is 53.51.
+Test: area of MyCircle is 53.61.
