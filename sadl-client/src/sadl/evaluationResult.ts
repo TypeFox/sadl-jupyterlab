@@ -1,6 +1,13 @@
+import '../style.css';
+import * as dom from './dom';
 import { EvaluationResultData } from './evaluationResultData'
+import { EvaluationResultViewZone } from './EvaluationResultViewZone'
 
-export class EvaluationResult {
+export class EvaluationResult implements monaco.editor.IContentWidget {
+
+    private static ID: number = 0;
+
+    private widgedId: string;
 
     protected viewZoneId: number;
     protected decorationId: string;
@@ -11,38 +18,51 @@ export class EvaluationResult {
 
     constructor(editor: monaco.editor.ICodeEditor, data: EvaluationResultData, viewChangeAccessor: monaco.editor.IViewZoneChangeAccessor) {
         this.editor = editor;
-
-        this.editor.onMouseDown((e) => {
-            const target = e!.target;
-            if (target && target.type === monaco.editor.MouseTargetType.CONTENT_VIEW_ZONE && this.isValid()) {
-                const targetRange = target.range;
-                const currentRange = this.getRange();
-                if (targetRange.endLineNumber === currentRange.endLineNumber
-                    && targetRange.endColumn === (currentRange.endColumn + 1)) {
-
-                    this.expanded = !this.expanded;
-                    this.setData(data);
-                    this.viewZone.heightInLines = this.expanded ? this.element.heightInLines : 1;
-                    editor.changeViewZones((accessor) => {
-                        this.update(accessor);
-                    });
-
-                }
-            }
-        });
+        this.widgedId = 'evaluation-result-widget' + (++EvaluationResult.ID);
 
         const range = data.range;
         this.decorationId = editor.deltaDecorations([], [{ range, options: {} }])[0];
-
+        this.viewZone = new EvaluationResultViewZone(data.range.endLineNumber);
         this.element = this.createEvaluationResultElement();
         this.setData(data);
-        this.viewZone = {
-            afterLineNumber: range.endLineNumber,
-            domNode: this.element.node,
-            suppressMouseDown: true,
-            heightInLines: this.element.heightInLines
-        };
         this.viewZoneId = viewChangeAccessor.addZone(this.viewZone);
+
+        this.editor.addContentWidget(this);
+
+        dom.addDisposableListener(this.element.node, 'click', (e) => {
+            let element = <HTMLElement>e.target;
+            if (element.tagName === 'A' && element.id) {
+                this.expanded = !this.expanded;
+                // TODO figure out a better way (if any) than remove + add. 
+                this.editor.removeContentWidget(this)
+                this.element = this.createEvaluationResultElement();
+                this.setData(data);
+                this.viewZone.heightInLines = this.expanded ? this.element.heightInLines : 1;
+                editor.changeViewZones((accessor) => {
+                    this.update(accessor);
+                    this.editor.addContentWidget(this);
+                });
+            }
+        });
+    }
+
+    getId(): string {
+        return this.widgedId;
+    }
+
+    getDomNode(): HTMLElement {
+        return this.element.node;
+    }
+
+    getPosition(): monaco.editor.IContentWidgetPosition {
+        const lineNumber = this.viewZone.afterLineNumber;
+        return {
+            position: {
+                column : 0,
+                lineNumber
+            },
+            preference: [monaco.editor.ContentWidgetPositionPreference.BELOW]
+        };
     }
 
     isValid(): boolean {
@@ -67,6 +87,15 @@ export class EvaluationResult {
         return false;
     }
 
+    escapeHtml(unsafe: string): string {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
     update(viewZoneChangeAccessor: monaco.editor.IViewZoneChangeAccessor): void {
         const range = this.getRange();
         if (range) {
@@ -80,6 +109,7 @@ export class EvaluationResult {
 
             this.viewZone.afterLineNumber = range.endLineNumber;
             viewZoneChangeAccessor.layoutZone(this.viewZoneId);
+            this.editor.layoutContentWidget(this);
         }
     }
 
@@ -116,13 +146,16 @@ export class EvaluationResult {
         if (svg) {
             html.push(svg);
         }
-        html.push(this.expanded ? data.value : `${segments[0]} ${multiline ? '...' : ''}`);
-        node.innerHTML = html.join('<span>&nbsp;</span>');
+        html.push(this.expanded || !multiline ? this.escapeHtml(data.value) : `<a id="anchor-${this.widgedId}">${this.escapeHtml(segments[0])} ${multiline ? '...' : ''}</a>`);
+        node.style.width = `${this.editor.getLayoutInfo().width}px`
+        node.style.height = `${(this.expanded ? segments.length : 1) * this.editor.getConfiguration().lineHeight}px`;
+        const innerHTML = html.join('<span>&nbsp;</span>');
+        node.innerHTML = innerHTML;
     }
 
     protected createEvaluationResultElement(): ElementDetails {
         const node = document.createElement('div');
-        node.style.height = `${this.editor.getConfiguration().lineHeight}px`;
+        dom.addClass(node, 'codelens-decoration');
         node.style.fontSize = '12px';
         node.style.fontFamily = 'Menlo, Monaco, \'Courier New\', monospace';
         node.style.lineHeight = '18px';
@@ -139,3 +172,4 @@ export interface ElementDetails {
     heightInLines?: number;
     heightInPx?: number;
 }
+

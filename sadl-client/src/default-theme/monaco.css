@@ -35,18 +35,18 @@
     background: #E6F0FF !important;
 }
 
-.number {
-    color: #000000 !important;
-    background: #E6F0FF !important;
-}
-
 .attribute {
     color: #000000 !important;
     background: white !important;
 }
 
+.number {
+    color: #000000 !important;
+    background: #E6F0FF !important;
+}
+
 .type {
-    color: #000080 !important;
+    color: #000080 !important;  
 }
 
 .tag {
@@ -71,4 +71,52 @@
 
 .predefined {
     color: #801480 !important;
+}
+
+.monaco-editor .codelens-decoration {
+    overflow: hidden;
+    display: inline-block;
+    text-overflow: ellipsis;
+    font-size: 90%;
+    color: #999999;
+    vertical-align: sub;
+}
+
+.monaco-editor .codelens-decoration > span,
+.monaco-editor .codelens-decoration > a {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.monaco-editor .codelens-decoration > a {
+    text-decoration: none;
+}
+
+.monaco-editor .codelens-decoration > a:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: blue !important;
+}
+
+.monaco-editor.vs-dark .codelens-decoration > a:hover {
+    color: #4E94CE !important;
+}
+
+.monaco-editor .codelens-decoration.invisible-cl {
+    opacity: 0;
+}
+
+@keyframes fadein { 0% { opacity:0; visibility:visible;} 100% { opacity:1; } }
+@-moz-keyframes fadein { 0% { opacity:0; visibility:visible;} 100% { opacity:1; } }
+@-o-keyframes fadein { 0% { opacity:0; visibility:visible;} 100% { opacity:1; } }
+@-webkit-keyframes fadein { 0% { opacity:0; visibility:visible;} 100% { opacity:1; } }
+
+.monaco-editor .codelens-decoration.fadein {
+    -webkit-animation: fadein 0.5s linear;
+    -moz-animation: fadein 0.5s linear;
+    -o-animation: fadein 0.5s linear;
+    animation: fadein 0.5s linear;
 }
