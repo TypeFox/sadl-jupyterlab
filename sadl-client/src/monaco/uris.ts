@@ -3,6 +3,10 @@ import {
 } from 'jupyterlab/lib/services';
 
 import {
+    IDocumentManager
+} from 'jupyterlab/lib/docmanager'
+
+import {
     JupyterLab
 } from 'jupyterlab/lib/application';
 
@@ -40,12 +44,14 @@ export class PathHandler implements IPathHandler {
 
     constructor(
         protected app: JupyterLab,
-        protected serviceManager: IServiceManager
+        protected serviceManager: IServiceManager,
+        protected documentManager: IDocumentManager
     ) {
     }
 
     open(path: string, sideBySide?: boolean): Promise<{}> {
-        return this.app.commands.execute('file-operations:open', { path });
+        this.documentManager.openOrReveal(path)
+        return Promise.resolve(null);
     }
 
     loadContent(path: string): Promise<string> {

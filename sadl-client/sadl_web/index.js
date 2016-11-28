@@ -17,6 +17,7 @@ sadl.registerPlugins([
     require('jupyterlab/lib/commandpalette/plugin').commandPaletteProvider,
     //require('jupyterlab/lib/console/plugin').consoleTrackerProvider,
     require('jupyterlab/lib/csvwidget/plugin').csvHandlerExtension,
+    require('jupyterlab/lib/docmanager/plugin').docManagerProvider,
     require('jupyterlab/lib/docregistry/plugin').docRegistryProvider,
     require('jupyterlab/lib/editorwidget/monaco/plugin').editorHandlerProvider,
     //require('jupyterlab/lib/faq/plugin').faqExtension,
