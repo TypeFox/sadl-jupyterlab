@@ -25,11 +25,7 @@ export class URLs {
         if (this._location.protocol === 'https:') {
             proxyPort = 8443
         }
-        if (host === 'localhost') {
-            // devmode
-            return protocol + '//' + host + `:${port}` + contextPath + path
-        }
-        return protocol + '//' + host + `:${proxyPort}` + contextPath + `/p${port}` + path
+        return protocol + '//' + host + `:${port}` + contextPath + path
     }
 
     /**
