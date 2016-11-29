@@ -4,7 +4,7 @@
 @import './toolbar.css';
 
 body {
-  background: #E0E0E0;
+  overflow: hidden;
   font-family: sans-serif;
   position: absolute;
   top: 0;
@@ -13,12 +13,10 @@ body {
   bottom: 0;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 
 .p-Widget {
   overflow: visible;
-  background: white;
 }
 
 .p-Widget.jp-CSVWidget {
@@ -27,10 +25,10 @@ body {
 
 .p-Widget.jp-ConsoleContent-content {
   overflow: auto;
+  background-color: white;
 }
 
 .jp-ConsoleContent-content .jp-Cell.jp-ConsoleContent-foreignCell {
-  background-color: white;
   flex: initial;
   overflow: visible;
 }
