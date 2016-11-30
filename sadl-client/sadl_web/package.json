@@ -9,7 +9,7 @@
     "es6-promise": "3.3.x",
     "font-awesome": "^4.7.0",
     "sadl-client": "file:../",
-    "jupyterlab": "file:../../../../jupyterlab",
+    "jupyterlab": "file:../../../jupyterlab",
     "phosphor": "0.7.x",
     "material-design-icons": "^2.2.3"
   },
