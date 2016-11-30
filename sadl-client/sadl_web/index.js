@@ -11,6 +11,8 @@ var sadl = new SADL();
 sadl.registerPlugins([
     require('sadl-client/lib/languageServer/plugin').languageServerExtension,
     require('sadl-client/lib/languageServer/editorService/plugin').editorServiceProvider,
+    require('sadl-client/lib/wizard/plugin').wizardExtension,
+
 
     require('jupyterlab/lib/clipboard/plugin').clipboardProvider,
     //require('jupyterlab/lib/commandlinker/plugin').commandLinkerProvider,
