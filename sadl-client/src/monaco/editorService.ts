@@ -131,11 +131,11 @@ export class JupyterLabEditorService implements IEditorService {
         return new Promise(resolve => {
             const onValueChanged = () => {
                 if (editor.version > 0) {
-                    editor.model.valueChanged.disconnect(onValueChanged);
+                    editor.model.value.changed.disconnect(onValueChanged);
                     resolve();
                 }
             }
-            editor.model.valueChanged.connect(onValueChanged);
+            editor.model.value.changed.connect(onValueChanged);
         });
     }
 

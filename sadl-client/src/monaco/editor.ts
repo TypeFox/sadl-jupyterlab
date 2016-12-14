@@ -7,7 +7,11 @@ import {
 } from 'jupyterlab/lib/common/interfaces';
 
 import {
-    MonacoCodeEditor, MonacoModel, findLanguageForPath, findLanguageById
+    IObservableString, ObservableString
+} from 'jupyterlab/lib/common/observablestring';
+
+import {
+    MonacoCodeEditor, findLanguageIdForPath, findLanguageById
 } from 'jupyterlab/lib/monaco';
 
 export type EditorPredicate = (editor: MonacoEditor) => boolean;
@@ -109,6 +113,30 @@ export class MonacoEditor extends MonacoCodeEditor implements IMonacoEditor {
         this._listeners.push(registry().register(this));
     }
 
+    focus(): void {
+        // FIXME: remove the guard when https://github.com/Microsoft/monaco-editor/issues/254 is fixed
+        if (this.isFocusable()) {
+            super.focus();
+        }
+    }
+
+    /**
+     * Returns `true` if the topmost element at the host node's coordinates belongs to the host node;
+     * otherwise `false`. 
+     */
+    protected isFocusable(): boolean {
+        const hostNode = this.getHostNode();
+        if (!hostNode) {
+            return false;
+        }
+        const { left, top } = hostNode.getBoundingClientRect();
+        const element = document.elementFromPoint(left, top)
+        if (!element) {
+            return false;
+        }
+        return hostNode === element || hostNode.contains(element);
+    }
+
      get version(): number {
         return this._version;
     }
@@ -146,24 +174,23 @@ export class MonacoEditor extends MonacoCodeEditor implements IMonacoEditor {
 
     protected createModel(uri: string): monaco.editor.IEditorModel {
         const monacoUri = monaco.Uri.parse(uri);
-        const languageId = findLanguageForPath(monacoUri.path);
-        if (languageId) {
-            const editorModel = this.editor.getModel();
-            const value = editorModel.getValue();
+        const languageId = findLanguageIdForPath(monacoUri.path);
 
-            const loadedModel = monaco.editor.getModel(monacoUri);
-            if (loadedModel !== null) {
-                loadedModel.setValue(value);
-                monaco.editor.setModelLanguage(loadedModel, languageId.id);
-                return loadedModel;
-            }
-            return monaco.editor.createModel(value, languageId.id, monacoUri);
+        const editorModel = this.editor.getModel();
+        const value = editorModel.getValue();
+
+        const loadedModel = monaco.editor.getModel(monacoUri);
+        if (loadedModel !== null) {
+            loadedModel.setValue(value);
+            monaco.editor.setModelLanguage(loadedModel, languageId);
+            return loadedModel;
         }
+        return monaco.editor.createModel(value, languageId, monacoUri);
     }
 
-    protected _onValueChanged(model: MonacoModel, args: IChangedArgs<string>): void {
+    protected _onValueChanged(value: IObservableString, args: ObservableString.IChangedArgs): void {
         this._version = this._version + 1;
-        super._onValueChanged(model, args);
+        super._onValueChanged(value, args);
     }
 
 }

@@ -30,21 +30,18 @@ export class LanguageServerAwareEditorWidget extends EditorWidget {
     // FIXME: should be fetched from the editor model
     languageId: string;
 
-    constructor(
-        editorFactory: (host: Widget) => CodeEditor.IEditor,
-        context: DocumentRegistry.IContext<DocumentRegistry.IModel>
-    ) {
-        super(editorFactory, context, undefined);
+    constructor(options: EditorWidget.IOptions) {
+        super(options);
 
         this.updateURI();
-        context.pathChanged.connect(() => this.updateURI(true));
+        this._context.pathChanged.connect(() => this.updateURI(true));
 
-        context.model.stateChanged.connect((model, args) => {
+        this._context.model.stateChanged.connect((model, args) => {
             if (args.name === 'dirty') {
                 this.saveDocument()
             }
         });
-        this.editor.model.valueChanged.connect(() => this.updateDocument());
+        this.editor.model.value.changed.connect(() => this.updateDocument());
     }
 
     get monacoEditor() {
@@ -74,7 +71,7 @@ export class LanguageServerAwareEditorWidget extends EditorWidget {
 
     protected updateDocument() {
         const uri = this.monacoEditor.uri;
-        const content = this.monacoEditor.model.value;
+        const content = this.monacoEditor.model.value.text;
         // FIXME get langauge from monaco editor
         Workspace.update(monaco.Uri.parse(uri), this.languageId, content);
     }

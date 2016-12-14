@@ -110,7 +110,11 @@ export function registerLanguages(
             preferKernel: false,
             canStartKernel: false,
             editorWidgetProvider: (editorFactory, context) => {
-                const editorWidget = new LanguageServerAwareEditorWidget(editorFactory, context);
+                const editorWidget = new LanguageServerAwareEditorWidget({
+                    context,
+                    factory: editorFactory,
+                    mimeTypeService: undefined
+                });
                 const sadlService = new InferenceEditorService()
                 sadlService.editor = (editorWidget.editor as MonacoEditor).editor;
                 sadlService.provider = new InferenceResultProvider(connection);

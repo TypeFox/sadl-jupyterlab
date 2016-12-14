@@ -44,7 +44,7 @@ export class DocumentEditorFactory extends ABCWidgetFactory<Widget, DocumentRegi
     }
 
     static createEditorWidget(editorFactory: (host: Widget) => MonacoEditor, context: DocumentRegistry.IContext<DocumentRegistry.IModel>) {
-        return new EditorWidget(editorFactory, context, undefined);
+        return new EditorWidget({factory: editorFactory, context, mimeTypeService: undefined});
     }
 
     protected createDocumentEditor(domElement: HTMLElement) {
