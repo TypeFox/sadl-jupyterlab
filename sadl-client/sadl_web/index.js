@@ -46,6 +46,7 @@ require('sadl-client/lib/default-theme/index.css');
 
 window.onload = function () {
     sadl.registerPlugin(require('jupyterlab/lib/monaco/plugin').commandsPlugin);
+    sadl.registerPlugin(require('sadl-client/lib/monaco/plugin').servicesPlugin);
     sadl.start();
 }
 
