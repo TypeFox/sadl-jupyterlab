@@ -234,7 +234,3 @@ interface PromiseConstructor {
 }
 
 declare var Promise: PromiseConstructor;
-
-
-// *just* for jupyter-js-services, which uses a different name.
-declare type Thenable<T> = PromiseLike<T>;
