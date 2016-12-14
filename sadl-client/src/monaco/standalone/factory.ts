@@ -22,10 +22,15 @@ import {
     MonacoEditor
 } from '../editor';
 
+import {
+    IEditorServices
+} from 'jupyterlab/lib/codeeditor';
+
 export interface IOptions extends DocumentRegistry.IWidgetFactoryOptions {
-    services?: monaco.editor.IEditorOverrideServices
+    editorServices: IEditorServices;
+    sessionManager: Session.IManager;
     application: JupyterLab;
-    editorWidgetProvider?: (editorFactory: (host: Widget) => MonacoEditor, context: DocumentRegistry.IContext<DocumentRegistry.IModel>) => EditorWidget;
+    editorWidgetProvider?: (options: EditorWidget.IOptions) => EditorWidget;
 }
 
 export class DocumentEditorFactory extends ABCWidgetFactory<Widget, DocumentRegistry.IModel> {
@@ -38,8 +43,11 @@ export class DocumentEditorFactory extends ABCWidgetFactory<Widget, DocumentRegi
      * Create a new widget given a context.
      */
     protected createNewWidget(context: DocumentRegistry.IContext<DocumentRegistry.IModel>): Widget {
-        const editorWidgetProvider = this._options.editorWidgetProvider || DocumentEditorFactory.createEditorWidget;
-        const editorWidget = editorWidgetProvider(host => this.createDocumentEditor(host.node), context);
+        const editorWidget = this._options.editorWidgetProvider({
+            context,
+            factory: (host) => this.createDocumentEditor(host.node),
+            mimeTypeService: this._options.editorServices.mimeTypeService
+        });
         return editorWidget;
     }
 
@@ -52,7 +60,7 @@ export class DocumentEditorFactory extends ABCWidgetFactory<Widget, DocumentRegi
             folding: true
         };
         const uuid = utils.uuid();
-        const editorServices = this._options.services;
+        const editorServices = this._options.editorServices;
         return new MonacoEditor({ uuid, domElement, editorOptions, editorServices });
     }
 

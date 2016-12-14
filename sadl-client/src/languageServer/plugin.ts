@@ -11,6 +11,14 @@ import {
 } from 'jupyterlab/lib/docregistry'
 
 import {
+    IEditorServices
+} from 'jupyterlab/lib/codeeditor';
+
+import {
+    IServiceManager
+} from 'jupyterlab/lib/services';
+
+import {
     LanguageDescription
 } from '../languageserver/protocol/registry';
 
@@ -36,10 +44,6 @@ import {
 } from 'jupyterlab/lib/monaco';
 
 import {
-    IEditorService
-} from '../monaco/editorService';
-
-import {
     MonacoEditor
 } from '../monaco/editor';
 
@@ -60,8 +64,8 @@ export const languageServerExtension: JupyterLabPlugin<void> = {
     id: 'sadl.extensions.languageServer',
     requires: [
         IDocumentRegistry,
-        IEditorService,
-        IEditorTracker
+        IEditorTracker,
+        IEditorServices,
     ],
     activate: activateLanguageServer,
     autoStart: true
@@ -70,10 +74,11 @@ export const languageServerExtension: JupyterLabPlugin<void> = {
 function activateLanguageServer(
     app: JupyterLab,
     registry: IDocumentRegistry,
-    editorService: IEditorService,
+    serviceManager: IServiceManager,
+    editorServices: IEditorServices,
     editorTracker: IEditorTracker): void {
 
-    registerLanguages(app, registry, editorService, editorTracker);
+    registerLanguages(app, registry, serviceManager, editorServices, editorTracker);
     doRegisterFileCreators(registry);
     openWebSocket();
 }
@@ -95,35 +100,31 @@ function toMonacoLanguage(language: LanguageDescription): ILanguage {
 export function registerLanguages(
     application: JupyterLab,
     registry: IDocumentRegistry,
-    editorService: IEditorService,
+    serviceManager: IServiceManager,
+    editorServices: IEditorServices,
     editorTracker: IEditorTracker): void {
 
     for (const languageDescription of [sadlLanguage]) {
         const language = toMonacoLanguage(languageDescription);
         const factoryOptions: factory.IOptions = {
+            sessionManager: serviceManager.sessions,
             application,
-            services: { editorService },
+            editorServices,
             fileExtensions: language.extensions!,
             defaultFor: language.extensions,
             name: language.aliases![0] + ' Editor',
             modelName: 'text',
             preferKernel: false,
             canStartKernel: false,
-            editorWidgetProvider: (editorFactory, context) => {
-                const editorWidget = new LanguageServerAwareEditorWidget({
-                    context,
-                    factory: editorFactory,
-                    mimeTypeService: undefined
-                });
-                const sadlService = new InferenceEditorService()
-                sadlService.editor = (editorWidget.editor as MonacoEditor).editor;
-                sadlService.provider = new InferenceResultProvider(connection);
+            editorWidgetProvider: options => {
+                const editorWidget = new LanguageServerAwareEditorWidget(options);
                 editorWidget.languageId = language.id;
                 return editorWidget;
             }
         };
 
         const editorFactory = new factory.DocumentEditorFactory(factoryOptions);
+        editorFactory.widgetCreated.connect((factory, panel) => { });
 
         registry.addWidgetFactory(editorFactory);
         registerLanguage(language);

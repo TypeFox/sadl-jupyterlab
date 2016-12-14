@@ -11,14 +11,10 @@ var sadl = new SADL();
 sadl.registerPlugins([
     require('sadl-client/lib/languageServer/plugin').languageServerExtension,
     require('sadl-client/lib/languageServer/editorService/plugin').editorServiceProvider,
-    //require('sadl-client/lib/wizard/plugin').wizardExtension,
-
 
     require('jupyterlab/lib/clipboard/plugin').plugin,
-    require('jupyterlab/lib/monaco/plugin').editorCommands,
     require('jupyterlab/lib/commandlinker/plugin').plugin,
     require('jupyterlab/lib/commandpalette/plugin').plugin,
-    require('jupyterlab/lib/console/plugin').plugin,
     require('jupyterlab/lib/csvwidget/plugin').plugin,
     require('jupyterlab/lib/docmanager/plugin').plugin,
     require('jupyterlab/lib/docregistry/plugin').plugin,
@@ -27,11 +23,9 @@ sadl.registerPlugins([
     require('jupyterlab/lib/filebrowser/plugin').plugin,
     require('jupyterlab/lib/imagewidget/plugin').plugin,
     require('jupyterlab/lib/inspector/plugin').plugin,
-    //require('jupyterlab/lib/launcher/plugin').plugin,
     require('jupyterlab/lib/layoutrestorer/plugin').plugin,
     require('jupyterlab/lib/mainmenu/plugin').plugin,
     require('jupyterlab/lib/markdownwidget/plugin').plugin,
-    require('jupyterlab/lib/notebook/plugin').plugin,
     require('jupyterlab/lib/rendermime/plugin').plugin,
     require('jupyterlab/lib/running/plugin').plugin,
     require('jupyterlab/lib/services/plugin').plugin,
@@ -51,6 +45,7 @@ require('sadl-client/lib/default-theme/index.css');
 
 
 window.onload = function () {
+    sadl.registerPlugin(require('jupyterlab/lib/monaco/plugin').commandsPlugin);
     sadl.start();
 }
 
