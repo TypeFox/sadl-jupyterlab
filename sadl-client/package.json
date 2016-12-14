@@ -35,9 +35,10 @@
     "monaco-editor-core": "0.7.x",
     "monaco-languages": "0.3.x",
     "phosphor": "0.7.x",
-    "reconnecting-websocket": "^1.0.1",
+    "reconnecting-websocket": "^3.0.x",
     "toastr": "^2.1.2",
-    "vscode-languageclient": "2.5.x"
+    "vscode-jsonrpc": "^3.0.0-alpha",
+    "vscode-languageclient": "^3.0.0-alpha"
   },
   "devDependencies": {
     "@types/toastr": "^2.1.2",

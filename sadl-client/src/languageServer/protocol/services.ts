@@ -2,7 +2,7 @@ import * as lstypes from 'vscode-languageserver-types'
 import * as protocol from 'vscode-languageclient/lib/protocol'
 import { 
     MessageReader, MessageWriter,
-    NotificationHandler, Logger, ClientMessageConnection 
+    NotificationHandler, Logger, MessageConnection 
 } from 'vscode-jsonrpc'
 
 export class ConsoleLogger implements Logger {

@@ -34,7 +34,7 @@ export class LanguageServerAwareEditorWidget extends EditorWidget {
         editorFactory: (host: Widget) => CodeEditor.IEditor,
         context: DocumentRegistry.IContext<DocumentRegistry.IModel>
     ) {
-        super(editorFactory, context);
+        super(editorFactory, context, undefined);
 
         this.updateURI();
         context.pathChanged.connect(() => this.updateURI(true));

@@ -197,7 +197,11 @@ export class JupyterLabEditorService implements IEditorService {
         }
         const uri = input.resource;
         const language = findLanguageForPath(uri.path);
-        return monaco.editor.createModel(content, language, uri);
+        if (language) {
+            return monaco.editor.createModel(content, language.id, uri);
+        } else {
+            return undefined;
+        }
     }
 
 }

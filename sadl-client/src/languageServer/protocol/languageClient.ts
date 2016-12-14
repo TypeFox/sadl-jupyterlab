@@ -2,7 +2,7 @@ import * as utils from '../../utils/notebook';
 
 import * as is from 'vscode-jsonrpc/lib/is'
 import { Disposable } from 'vscode-jsonrpc/lib/events'
-import { ClientMessageConnection, NotificationType } from 'vscode-jsonrpc'
+import { MessageConnection, NotificationType } from 'vscode-jsonrpc'
 
 import * as lstypes from 'vscode-languageserver-types'
 import * as protocol from 'vscode-languageclient/lib/protocol'
@@ -61,8 +61,9 @@ export class ColoringIdToCssStyleMap {
 
 // FIXME move to protocol module
 class ColoringNotification {
-    static type: NotificationType<ColoringParams> = {
-        method: 'textDocument/updateColoring'
+    static type: NotificationType<ColoringParams, any> = {
+        method: 'textDocument/updateColoring',
+        _: undefined
     };
 }
 
@@ -75,14 +76,14 @@ export class LanguageClient implements
         Disposable {
 
     private _languages: LanguageDescription[]
-    private _connection: ClientMessageConnection
+    private _connection: MessageConnection
 
     private _capabilites: protocol.ServerCapabilities
 
     private _disposables: Disposable[] = [];
     private _isDisposed: boolean;
 
-    constructor(connection: ClientMessageConnection, languages: LanguageDescription[]) {
+    constructor(connection: MessageConnection, languages: LanguageDescription[]) {
         this._languages = languages
         this._connection = connection
 

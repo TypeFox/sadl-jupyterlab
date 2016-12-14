@@ -147,17 +147,18 @@ export class MonacoEditor extends MonacoCodeEditor implements IMonacoEditor {
     protected createModel(uri: string): monaco.editor.IEditorModel {
         const monacoUri = monaco.Uri.parse(uri);
         const languageId = findLanguageForPath(monacoUri.path);
+        if (languageId) {
+            const editorModel = this.editor.getModel();
+            const value = editorModel.getValue();
 
-        const editorModel = this.editor.getModel();
-        const value = editorModel.getValue();
-
-        const loadedModel = monaco.editor.getModel(monacoUri);
-        if (loadedModel !== null) {
-            loadedModel.setValue(value);
-            monaco.editor.setModelLanguage(loadedModel, languageId);
-            return loadedModel;
+            const loadedModel = monaco.editor.getModel(monacoUri);
+            if (loadedModel !== null) {
+                loadedModel.setValue(value);
+                monaco.editor.setModelLanguage(loadedModel, languageId.id);
+                return loadedModel;
+            }
+            return monaco.editor.createModel(value, languageId.id, monacoUri);
         }
-        return monaco.editor.createModel(value, languageId, monacoUri);
     }
 
     protected _onValueChanged(model: MonacoModel, args: IChangedArgs<string>): void {

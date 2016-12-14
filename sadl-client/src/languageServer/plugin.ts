@@ -1,5 +1,5 @@
 import {
-    createClientMessageConnection, ClientMessageConnection
+    createMessageConnection, MessageConnection
 } from 'vscode-jsonrpc';
 
 import {
@@ -33,7 +33,7 @@ import {
 
 import {
     registerLanguage, ILanguage
-} from 'jupyterlab/lib/monaco/languages';
+} from 'jupyterlab/lib/monaco';
 
 import {
     IEditorService
@@ -144,7 +144,7 @@ export function doRegisterFileCreators(registry: IDocumentRegistry) {
 }
 
 
-let connection: ClientMessageConnection = null;
+let connection: MessageConnection = null;
 
 function openWebSocket() {
     // http://localhost:8080/sadlmonaco
@@ -160,7 +160,7 @@ function openWebSocket() {
         const messageReader = new WebSocketMessageReader(webSocket);
 
         const logger = new ConsoleLogger();
-        connection = createClientMessageConnection(messageReader, messageWriter, logger);
+        connection = createMessageConnection(messageReader, messageWriter, logger);
         const languageClient = new LanguageClient(connection, [sadlLanguage]);
         languageClient.start().then(() => {
             // send open notification for all open editors
