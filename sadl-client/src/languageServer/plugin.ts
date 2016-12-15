@@ -118,6 +118,9 @@ export function registerLanguages(
             canStartKernel: false,
             editorWidgetProvider: options => {
                 const editorWidget = new LanguageServerAwareEditorWidget(options);
+                const sadlService = new InferenceEditorService();
+                sadlService.editor = editorWidget.monacoEditor.editor;
+                sadlService.provider = new InferenceResultProvider(connection);
                 editorWidget.languageId = language.id;
                 return editorWidget;
             }
