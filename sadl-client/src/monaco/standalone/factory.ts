@@ -56,12 +56,7 @@ export class DocumentEditorFactory extends ABCWidgetFactory<Widget, DocumentRegi
     }
 
     protected createDocumentEditor(domElement: HTMLElement) {
-        const editorOptions: monaco.editor.IDiffEditorConstructionOptions = {
-            folding: true
-        };
-        const uuid = utils.uuid();
-        const editorServices = this._options.editorServices;
-        return new MonacoEditor({ uuid, domElement, editorOptions, editorServices });
+        return this._options.editorServices.factory.newDocumentEditor(domElement, {}) as MonacoEditor;
     }
 
 }
