@@ -38,6 +38,11 @@ mkdir build_sadl_docker \
 && npm install \
 && npm run build:all \
 && pip install -e . \
-&& jupyter serverextension enable --py sadl_web
+&& jupyter serverextension enable --py sadl_web \
+&& python setup.py sdist \
+&& cp ./dist/sadl_web-0.0.1.tar.gz ../../sadlos2/sadl3/deployment/sadl_web-0.0.1.tar.gz \
+&& cd ../../sadlos2/sadl3/deployment/ \
+&& docker build --rm=true -t typefox/websadl . \
+&& docker run -p 8080:8080 -p 8888:8888 typefox/websadl
 ```
 
