@@ -18,7 +18,7 @@ export interface InferenceParams {
 }
 
 export namespace InferenceResultsRequest {
-    export const type: RequestType<InferenceParams, InferenceResult[], void, void> = {
+    export const type: RequestType<InferenceParams, InferenceResult[], void> = {
         get method() {
             return 'sadl/inferenceResults'
         },

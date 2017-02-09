@@ -61,7 +61,7 @@ export class ColoringIdToCssStyleMap {
 
 // FIXME move to protocol module
 class ColoringNotification {
-    static type: NotificationType<ColoringParams, any> = {
+    static type: NotificationType<ColoringParams> = {
         method: 'textDocument/updateColoring',
         _: undefined
     };

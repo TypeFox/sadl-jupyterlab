@@ -37,8 +37,8 @@
     "phosphor": "0.7.x",
     "reconnecting-websocket": "^3.0.x",
     "toastr": "^2.1.2",
-    "vscode-jsonrpc": "3.0.0-alpha.1",
-    "vscode-languageclient": "3.0.0-alpha.1"
+    "vscode-jsonrpc": "3.0.0-alpha.2",
+    "vscode-languageclient": "3.0.0-alpha.2"
   },
   "devDependencies": {
     "@types/toastr": "^2.1.2",
